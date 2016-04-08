@@ -1,0 +1,67 @@
+@tape-frame-width: 2em;
+@tape-color: #5A5A5A;
+
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	font-size: 12px;
+	overflow: hidden;
+}
+
+.table-cornor(@rotate-angle) {
+	content: "";
+	display: block;
+	background-color: @tape-color;
+	position: absolute;
+	width: @tape-frame-width * 2;
+	height: @tape-frame-width * 2;
+	top: 0px;
+	transform: rotate(@rotate-angle);
+}
+
+.tape {
+
+	&__frame {
+	
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		background-color: @tape-color;
+		
+		&--left {
+			left: 0px;
+			top: 0px;
+			width: @tape-frame-width;
+		}
+		
+		&--right {
+			right: 0px;
+			top: 0px;
+			width: @tape-frame-width
+		}
+		
+		&--top {
+			left: 0px;
+			top: 0px;
+			height: @tape-frame-width;
+			
+			&:before {
+				.table-cornor(45deg);
+				left: 0px;
+			}
+			
+			&:after {
+				.table-cornor(-45deg);
+				right: 0px;
+			}
+		}
+		
+		&--bottom {
+			bottom: 0px;
+			height: @tape-frame-width * 5;
+
+		}
+	}
+}

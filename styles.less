@@ -1,5 +1,6 @@
 @tape-frame-width: 2em;
 @tape-color: #5A5A5A;
+@tape-layout-z-index: 0;
 
 html, body {
 	height: 100%;
@@ -64,4 +65,46 @@ html, body {
 
 		}
 	}
+	
+	&__holder {
+	
+		@holder-height-times: 3.5;
+		@holder-height: @tape-frame-width * @holder-height-times;
+		@holder-width-percentage: 40%;
+		@holder-side-rotate-degree: 11.5deg;
+		@holder-left-margin: (100% - @holder-width-percentage) * 0.5;
+	
+		.holder-side(@rotate-degree) {
+			content: "";
+			display: block;
+			position: absolute;
+			width: @tape-frame-width * @holder-height-times;
+			height: 1 / cos(@rotate-degree) / @tape-frame-width * @holder-height-times * @holder-height-times * 1.5;
+			transform: rotate(@rotate-degree);
+			background-color: darken(@tape-color, 8%);
+		}
+	
+		position: absolute;
+		bottom: 0px;
+		left: @holder-left-margin;
+
+		z-index : @tape-layout-z-index + 1;
+		
+		height: @holder-height;
+		width: @holder-width-percentage;
+		
+		background-color: darken(@tape-color, 8%);
+		
+		&:before {
+			.holder-side(@holder-side-rotate-degree);
+			transform-origin: top left;
+		}
+		
+		&:after {
+			.holder-side(-1 * @holder-side-rotate-degree);
+			transform-origin: top right;
+			right: 0px;
+		}
+	}
+	
 }

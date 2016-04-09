@@ -11,17 +11,6 @@ html, body {
 	overflow: hidden;
 }
 
-.table-cornor(@rotate-angle) {
-	content: "";
-	display: block;
-	background-color: @tape-color;
-	position: absolute;
-	width: @tape-frame-width * 2;
-	height: @tape-frame-width * 2;
-	top: 0px;
-	transform: rotate(@rotate-angle);
-}
-
 .tape {
 
 	&__frame {
@@ -48,19 +37,31 @@ html, body {
 			top: 0px;
 			height: @tape-frame-width;
 			
-			&:before {
-				.table-cornor(45deg);
+			.table-corner(@rotate-angle) {
+				content: "";
+				display: block;
+				background-color: @tape-color;
+				position: absolute;
+				width: @tape-frame-width * 2;
+				height: @tape-frame-width * 2;
+				top: 0px;
+				transform: rotate(@rotate-angle);
+			}
+			
+			&::before {
+				.table-corner(45deg);
 				left: 0px;
 			}
 			
-			&:after {
-				.table-cornor(-45deg);
+			&::after {
+				.table-corner(-45deg);
 				right: 0px;
 			}
 		}
 		
 		&--bottom {
 			bottom: 0px;
+			z-index: -2;
 			height: @tape-frame-width * 5;
 
 		}
@@ -83,27 +84,82 @@ html, body {
 			transform: rotate(@rotate-degree);
 			background-color: darken(@tape-color, 8%);
 		}
+		
+		.holder-shadow(@x, @y) {
+			box-shadow: @x @y 3px darken(@tape-color, 80%);
+		}
 	
 		position: absolute;
 		bottom: 0px;
 		left: @holder-left-margin;
-
-		z-index : @tape-layout-z-index + 1;
 		
 		height: @holder-height;
 		width: @holder-width-percentage;
 		
 		background-color: darken(@tape-color, 8%);
+		box-shadow: 0 -0.6em 0.3em -0.4em darken(@tape-color, 80%);
 		
-		&:before {
+		&::before {
 			.holder-side(@holder-side-rotate-degree);
+			.holder-shadow(-0.3em, -0.3em);
 			transform-origin: top left;
+			z-index : -1;
 		}
 		
-		&:after {
+		&::after {
 			.holder-side(-1 * @holder-side-rotate-degree);
+			.holder-shadow(0.3em, -0.3em);
 			transform-origin: top right;
 			right: 0px;
+			z-index : -1;
+		}
+	}
+	
+	&__nail {
+	
+		@nail-size: 1em;
+	
+		height: @nail-size * 1.5;
+		width: @nail-size * 1.5;
+		border-radius: 50%;
+		border: solid 0.3em darken(silver, 20%);
+		background-color: silver;
+		position: absolute;
+		z-index: @tape-layout-z-index + 5;
+		
+		.nail-cross(@rotate-deg) {
+			content: "";
+			position: absolute;
+			background-color: darken(silver, 45%);
+			transform: rotate(@rotate-deg);
+			height: @nail-size;
+			top: @nail-size * 0.25;
+			width: 28%;
+			left: @nail-size * 0.55;
+		}
+		
+		&::before {
+			.nail-cross(45deg);
+		}
+		
+		&::after {
+			.nail-cross(-45deg);
+		}
+	
+		&--top {
+			top: 1em;
+		}
+		
+		&--bottom {
+			bottom: 1em;
+		}
+		
+		&--left {
+			left: 1em;
+		}
+		
+		&--right {
+			right: 1em;
 		}
 	}
 	

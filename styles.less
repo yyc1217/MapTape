@@ -1,8 +1,9 @@
 @tape-frame-width: 2em;
+@tape-frame-bottom-times: 4;
 @tape-color: #5A5A5A;
 @tape-layout-z-index: 0;
 
-@holder-height-times: 3.5;
+@holder-height-times: 3;
 @holder-height: @tape-frame-width * @holder-height-times;
 @holder-width-percentage: 40%;
 @holder-side-rotate-degree: 11.5deg;
@@ -70,8 +71,7 @@ html, body {
 		&--bottom {
 			bottom: 0px;
 			z-index: -2;
-			height: @tape-frame-width * 5;
-
+			height: @tape-frame-width * @tape-frame-bottom-times;
 		}
 	}
 	
@@ -212,5 +212,41 @@ html, body {
 			bottom: 10%;
 			right: @tape-hole-circle-side-margin;
 		}	
-	}	
+	}
+	
+	@window-width-percentage: @holder-width-percentage;
+	@window-height: @tape-frame-width * (@holder-height-times + 1.5);
+	
+	&__window {
+		position: absolute;
+		bottom: @tape-frame-width * (@tape-frame-bottom-times + 1) ;
+		left: (100% - @window-width-percentage) * 0.5;
+		height: @window-height;
+		width: @window-width-percentage;
+		background-color: @tape-color;
+		border-radius: 16px;
+	}
+	
+	&__wheel {
+		
+		@wheel-frame-size: @tape-frame-width * (@holder-height-times + 0.7);
+
+		height: @wheel-frame-size;
+		width: @wheel-frame-size;
+		position: absolute;
+		margin: auto;
+		top: 0;
+		bottom: 0;
+		background-color: darken(@tape-color, 10%);
+		border-radius: 5px;
+		
+		&:nth-child(1) {
+			left: (@window-height - @wheel-frame-size) / 2;
+		}
+		
+		&:nth-child(2) {
+			right: (@window-height - @wheel-frame-size) / 2;
+		}
+		
+	}
 }

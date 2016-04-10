@@ -2,6 +2,14 @@
 @tape-color: #5A5A5A;
 @tape-layout-z-index: 0;
 
+@holder-height-times: 3.5;
+@holder-height: @tape-frame-width * @holder-height-times;
+@holder-width-percentage: 40%;
+@holder-side-rotate-degree: 11.5deg;
+@holder-left-margin: (100% - @holder-width-percentage) * 0.5;
+
+@nail-size: 1em;
+
 html, body {
 	height: 100%;
 	width: 100%;
@@ -69,12 +77,6 @@ html, body {
 	
 	&__holder {
 	
-		@holder-height-times: 3.5;
-		@holder-height: @tape-frame-width * @holder-height-times;
-		@holder-width-percentage: 40%;
-		@holder-side-rotate-degree: 11.5deg;
-		@holder-left-margin: (100% - @holder-width-percentage) * 0.5;
-	
 		.holder-side(@rotate-degree) {
 			content: "";
 			display: block;
@@ -92,7 +94,6 @@ html, body {
 		position: absolute;
 		bottom: 0px;
 		left: @holder-left-margin;
-		
 		height: @holder-height;
 		width: @holder-width-percentage;
 		
@@ -111,13 +112,12 @@ html, body {
 			.holder-shadow(0.3em, -0.3em);
 			transform-origin: top right;
 			right: 0px;
+			top: 0px;
 			z-index : -1;
 		}
 	}
 	
 	&__nail {
-	
-		@nail-size: 1em;
 	
 		height: @nail-size * 1.5;
 		width: @nail-size * 1.5;
@@ -146,21 +146,71 @@ html, body {
 			.nail-cross(-45deg);
 		}
 	
-		&--top {
+		&.top {
 			top: 1em;
 		}
 		
-		&--bottom {
+		&.bottom {
 			bottom: 1em;
 		}
 		
-		&--left {
+		&.left {
 			left: 1em;
 		}
 		
-		&--right {
+		&.right {
 			right: 1em;
+		}
+		
+		.tape__holder & {
+			margin: auto;
+			position: absolute;
+			top: @holder-height * 0.2; 
+			left: 0;
+			right: 0;
 		}
 	}
 	
+	&__hole {
+	
+		@tape-hole-square-size: 1.5em;
+		@tape-hole-circle-size: 2em;
+		@tape-hole-circle-side-margin: 12.5%;
+		@tape-hole-square-side-margin: 28%;
+		
+		background-color: darken(@tape-color, 80%);
+		position: absolute;
+	
+		&--square {
+			border-radius: 25%;
+			width: @tape-hole-square-size;
+			height: @tape-hole-square-size;
+		}
+		
+		&--circle {
+			border-radius: 50%;
+			width: @tape-hole-circle-size;
+			height: @tape-hole-circle-size;
+		}
+		
+		&:nth-child(1) {
+			bottom: 10%;
+			left: @tape-hole-circle-side-margin;
+		}
+		
+		&:nth-child(2) {
+			bottom: 22%;
+			left: @tape-hole-square-side-margin;
+		}
+		
+		&:nth-child(3) {
+			bottom: 22%;
+			right: @tape-hole-square-side-margin;
+		}
+		
+		&:nth-child(4) {
+			bottom: 10%;
+			right: @tape-hole-circle-side-margin;
+		}	
+	}	
 }

@@ -12,241 +12,241 @@
 @nail-size: 1em;
 
 html, body {
-	height: 100%;
-	width: 100%;
-	margin: 0px;
-	padding: 0px;
-	font-size: 12px;
-	overflow: hidden;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    font-size: 12px;
+    overflow: hidden;
 }
 
 .tape {
 
-	&__frame {
-	
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		background-color: @tape-color;
-		
-		&--left {
-			left: 0px;
-			top: 0px;
-			width: @tape-frame-width;
-		}
-		
-		&--right {
-			right: 0px;
-			top: 0px;
-			width: @tape-frame-width
-		}
-		
-		&--top {
-			left: 0px;
-			top: 0px;
-			height: @tape-frame-width;
-			
-			.table-corner(@rotate-angle) {
-				content: "";
-				display: block;
-				background-color: @tape-color;
-				position: absolute;
-				width: @tape-frame-width * 2;
-				height: @tape-frame-width * 2;
-				top: 0px;
-				transform: rotate(@rotate-angle);
-			}
-			
-			&::before {
-				.table-corner(45deg);
-				left: 0px;
-			}
-			
-			&::after {
-				.table-corner(-45deg);
-				right: 0px;
-			}
-		}
-		
-		&--bottom {
-			bottom: 0px;
-			z-index: -2;
-			height: @tape-frame-width * @tape-frame-bottom-times;
-		}
-	}
-	
-	&__holder {
-	
-		.holder-side(@rotate-degree) {
-			content: "";
-			display: block;
-			position: absolute;
-			width: @tape-frame-width * @holder-height-times;
-			height: 1 / cos(@rotate-degree) / @tape-frame-width * @holder-height-times * @holder-height-times * 1.5;
-			transform: rotate(@rotate-degree);
-			background-color: darken(@tape-color, 8%);
-		}
-		
-		.holder-shadow(@x, @y) {
-			box-shadow: @x @y 3px darken(@tape-color, 80%);
-		}
-	
-		position: absolute;
-		bottom: 0px;
-		left: @holder-left-margin;
-		height: @holder-height;
-		width: @holder-width-percentage;
-		
-		background-color: darken(@tape-color, 8%);
-		box-shadow: 0 -0.6em 0.3em -0.4em darken(@tape-color, 80%);
-		
-		&::before {
-			.holder-side(@holder-side-rotate-degree);
-			.holder-shadow(-0.3em, -0.3em);
-			transform-origin: top left;
-			z-index : -1;
-		}
-		
-		&::after {
-			.holder-side(-1 * @holder-side-rotate-degree);
-			.holder-shadow(0.3em, -0.3em);
-			transform-origin: top right;
-			right: 0px;
-			top: 0px;
-			z-index : -1;
-		}
-	}
-	
-	&__nail {
-	
-		height: @nail-size * 1.5;
-		width: @nail-size * 1.5;
-		border-radius: 50%;
-		border: solid 0.3em darken(silver, 20%);
-		background-color: silver;
-		position: absolute;
-		z-index: @tape-layout-z-index + 5;
-		
-		.nail-cross(@rotate-deg) {
-			content: "";
-			position: absolute;
-			background-color: darken(silver, 45%);
-			transform: rotate(@rotate-deg);
-			height: @nail-size;
-			top: @nail-size * 0.25;
-			width: 28%;
-			left: @nail-size * 0.55;
-		}
-		
-		&::before {
-			.nail-cross(45deg);
-		}
-		
-		&::after {
-			.nail-cross(-45deg);
-		}
-	
-		&.top {
-			top: 1em;
-		}
-		
-		&.bottom {
-			bottom: 1em;
-		}
-		
-		&.left {
-			left: 1em;
-		}
-		
-		&.right {
-			right: 1em;
-		}
-		
-		.tape__holder & {
-			margin: auto;
-			position: absolute;
-			top: @holder-height * 0.2; 
-			left: 0;
-			right: 0;
-		}
-	}
-	
-	&__hole {
-	
-		@tape-hole-square-size: 1.5em;
-		@tape-hole-circle-size: 2em;
-		@tape-hole-circle-side-margin: 12.5%;
-		@tape-hole-square-side-margin: 28%;
-		
-		background-color: darken(@tape-color, 80%);
-		position: absolute;
-	
-		&--square {
-			border-radius: 25%;
-			width: @tape-hole-square-size;
-			height: @tape-hole-square-size;
-		}
-		
-		&--circle {
-			border-radius: 50%;
-			width: @tape-hole-circle-size;
-			height: @tape-hole-circle-size;
-		}
-		
-		&:nth-child(1) {
-			bottom: 10%;
-			left: @tape-hole-circle-side-margin;
-		}
-		
-		&:nth-child(2) {
-			bottom: 22%;
-			left: @tape-hole-square-side-margin;
-		}
-		
-		&:nth-child(3) {
-			bottom: 22%;
-			right: @tape-hole-square-side-margin;
-		}
-		
-		&:nth-child(4) {
-			bottom: 10%;
-			right: @tape-hole-circle-side-margin;
-		}	
-	}
-	
-	@window-width-percentage: @holder-width-percentage;
-	@window-height: @tape-frame-width * (@holder-height-times + 1.5);
-	
-	&__window {
-		position: absolute;
-		bottom: @tape-frame-width * (@tape-frame-bottom-times + 1) ;
-		left: (100% - @window-width-percentage) * 0.5;
-		height: @window-height;
-		width: @window-width-percentage;
-		background-color: @tape-color;
-		border-radius: 16px;
-	}
-	
-	&__wheel {
-		
-		@wheel-frame-size: @tape-frame-width * (@holder-height-times + 0.7);
+    &__frame {
+    
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-color: @tape-color;
+        
+        &--left {
+            left: 0px;
+            top: 0px;
+            width: @tape-frame-width;
+        }
+        
+        &--right {
+            right: 0px;
+            top: 0px;
+            width: @tape-frame-width
+        }
+        
+        &--top {
+            left: 0px;
+            top: 0px;
+            height: @tape-frame-width;
+            
+            .table-corner(@rotate-angle) {
+                content: "";
+                display: block;
+                background-color: @tape-color;
+                position: absolute;
+                width: @tape-frame-width * 2;
+                height: @tape-frame-width * 2;
+                top: 0px;
+                transform: rotate(@rotate-angle);
+            }
+            
+            &::before {
+                .table-corner(45deg);
+                left: 0px;
+            }
+            
+            &::after {
+                .table-corner(-45deg);
+                right: 0px;
+            }
+        }
+        
+        &--bottom {
+            bottom: 0px;
+            z-index: -2;
+            height: @tape-frame-width * @tape-frame-bottom-times;
+        }
+    }
+    
+    &__holder {
+    
+        .holder-side(@rotate-degree) {
+            content: "";
+            display: block;
+            position: absolute;
+            width: @tape-frame-width * @holder-height-times;
+            height: 1 / cos(@rotate-degree) / @tape-frame-width * @holder-height-times * @holder-height-times * 1.5;
+            transform: rotate(@rotate-degree);
+            background-color: darken(@tape-color, 8%);
+        }
+        
+        .holder-shadow(@x, @y) {
+            box-shadow: @x @y 3px darken(@tape-color, 80%);
+        }
+    
+        position: absolute;
+        bottom: 0px;
+        left: @holder-left-margin;
+        height: @holder-height;
+        width: @holder-width-percentage;
+        
+        background-color: darken(@tape-color, 8%);
+        box-shadow: 0 -0.6em 0.3em -0.4em darken(@tape-color, 80%);
+        
+        &::before {
+            .holder-side(@holder-side-rotate-degree);
+            .holder-shadow(-0.3em, -0.3em);
+            transform-origin: top left;
+            z-index : -1;
+        }
+        
+        &::after {
+            .holder-side(-1 * @holder-side-rotate-degree);
+            .holder-shadow(0.3em, -0.3em);
+            transform-origin: top right;
+            right: 0px;
+            top: 0px;
+            z-index : -1;
+        }
+    }
+    
+    &__nail {
+    
+        height: @nail-size * 1.5;
+        width: @nail-size * 1.5;
+        border-radius: 50%;
+        border: solid 0.3em darken(silver, 20%);
+        background-color: silver;
+        position: absolute;
+        z-index: @tape-layout-z-index + 5;
+        
+        .nail-cross(@rotate-deg) {
+            content: "";
+            position: absolute;
+            background-color: darken(silver, 45%);
+            transform: rotate(@rotate-deg);
+            height: @nail-size;
+            top: @nail-size * 0.25;
+            width: 28%;
+            left: @nail-size * 0.55;
+        }
+        
+        &::before {
+            .nail-cross(45deg);
+        }
+        
+        &::after {
+            .nail-cross(-45deg);
+        }
+    
+        &.top {
+            top: 1em;
+        }
+        
+        &.bottom {
+            bottom: 1em;
+        }
+        
+        &.left {
+            left: 1em;
+        }
+        
+        &.right {
+            right: 1em;
+        }
+        
+        .tape__holder & {
+            margin: auto;
+            position: absolute;
+            top: @holder-height * 0.2; 
+            left: 0;
+            right: 0;
+        }
+    }
+    
+    &__hole {
+    
+        @tape-hole-square-size: 1.5em;
+        @tape-hole-circle-size: 2em;
+        @tape-hole-circle-side-margin: 12.5%;
+        @tape-hole-square-side-margin: 28%;
+        
+        background-color: darken(@tape-color, 80%);
+        position: absolute;
+    
+        &--square {
+            border-radius: 25%;
+            width: @tape-hole-square-size;
+            height: @tape-hole-square-size;
+        }
+        
+        &--circle {
+            border-radius: 50%;
+            width: @tape-hole-circle-size;
+            height: @tape-hole-circle-size;
+        }
+        
+        &:nth-child(1) {
+            bottom: 10%;
+            left: @tape-hole-circle-side-margin;
+        }
+        
+        &:nth-child(2) {
+            bottom: 22%;
+            left: @tape-hole-square-side-margin;
+        }
+        
+        &:nth-child(3) {
+            bottom: 22%;
+            right: @tape-hole-square-side-margin;
+        }
+        
+        &:nth-child(4) {
+            bottom: 10%;
+            right: @tape-hole-circle-side-margin;
+        }    
+    }
+    
+    @window-width-percentage: @holder-width-percentage;
+    @window-height: @tape-frame-width * (@holder-height-times + 1.5);
+    
+    &__window {
+        position: absolute;
+        bottom: @tape-frame-width * (@tape-frame-bottom-times + 1) ;
+        left: (100% - @window-width-percentage) * 0.5;
+        height: @window-height;
+        width: @window-width-percentage;
+        background-color: @tape-color;
+        border-radius: 16px;
+    }
+    
+    &__wheel {
+        
+        @wheel-frame-size: @tape-frame-width * (@holder-height-times + 0.7);
 
-		height: @wheel-frame-size;
-		width: @wheel-frame-size;
-		position: absolute;
-		margin: auto;
-		top: 0;
-		bottom: 0;
-		background-color: darken(@tape-color, 10%);
-		border-radius: 5px;
-		
-		&:nth-child(1) {
-			left: (@window-height - @wheel-frame-size) / 2;
-		}
-		
-		&:nth-child(2) {
-			right: (@window-height - @wheel-frame-size) / 2;
-		}
-		
-	}
+        height: @wheel-frame-size;
+        width: @wheel-frame-size;
+        position: absolute;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+        background-color: darken(@tape-color, 10%);
+        border-radius: 5px;
+        
+        &:nth-child(1) {
+            left: (@window-height - @wheel-frame-size) / 2;
+        }
+        
+        &:nth-child(2) {
+            right: (@window-height - @wheel-frame-size) / 2;
+        }
+        
+    }
 }

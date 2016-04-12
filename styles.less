@@ -1,16 +1,20 @@
 @tape-frame-width: 2em;
-@tape-frame-bottom-times: 4;
+@tape-frame-bottom-times: 3;
 @tape-frame-bottom-height: @tape-frame-width * @tape-frame-bottom-times;
 @tape-frame-bottom-blank: 0.2em;
 
 @tape-color: #5A5A5A;
 @tape-background: 
 repeating-linear-gradient(to top, @tape-color, @tape-color 2px, transparent, transparent 3px), 
-repeating-linear-gradient(to right, @tape-color, @tape-color 2px, transparent, transparent 3px)
+repeating-linear-gradient(to right, @tape-color, @tape-color 2px, white, white 3px)
+;
+@tape-frame-cornor-background: 
+repeating-linear-gradient(45deg, @tape-color, @tape-color 2px, transparent, transparent 3px), 
+repeating-linear-gradient(-45deg, @tape-color, @tape-color 2px, white, white 3px)
 ;
 @tape-layout-z-index: 0;
 
-@holder-height-times: 3;
+@holder-height-times: 2.5;
 @holder-height: @tape-frame-width * @holder-height-times;
 @holder-width-percentage: 40%;
 @holder-side-rotate-degree: 11.5deg;
@@ -37,15 +41,15 @@ html, body {
         
         &--left {
             left: 0px;
-            top: 0px;
-            bottom: @tape-frame-bottom-blank + @tape-frame-bottom-height;
+            top: @tape-frame-width;
+            bottom: @tape-frame-bottom-blank + @tape-frame-bottom-height + 0.01;
             width: @tape-frame-width;
         }
         
         &--right {
             right: 0px;
-            top: 0px;
-            bottom: @tape-frame-bottom-blank + @tape-frame-bottom-height;
+            top: @tape-frame-width;
+            bottom: @tape-frame-bottom-blank + @tape-frame-bottom-height + 0.01;
             width: @tape-frame-width
         }
         
@@ -56,23 +60,23 @@ html, body {
             
             .table-corner(@rotate-angle) {
                 content: "";
-                display: block;
-                background: @tape-background;
+                z-index: -1;
+                background: @tape-frame-cornor-background;
                 position: absolute;
                 width: @tape-frame-width * 2;
                 height: @tape-frame-width * 2;
-                top: 0px;
+                top: 0.06em;
                 transform: rotate(@rotate-angle);
             }
             
             &::before {
                 .table-corner(45deg);
-                left: 0px;
+                left: -0.03em;
             }
             
             &::after {
                 .table-corner(-45deg);
-                right: 0px;
+                right: 0;
             }
         }
         
@@ -90,7 +94,7 @@ html, body {
             display: block;
             position: absolute;
             width: @tape-frame-width * @holder-height-times;
-            height: 1 / cos(@rotate-degree) / @tape-frame-width * @holder-height-times * @holder-height-times * 1.5;
+            height: 1 / cos(@rotate-degree) / @tape-frame-width * @holder-height-times * @holder-height-times * 1.7;
             transform: rotate(@rotate-degree);
             background: @tape-background;
         }
@@ -226,6 +230,7 @@ html, body {
     @window-height: @tape-frame-width * (@holder-height-times + 1.5);
     
     &__window {
+        display:none;
         position: absolute;
         bottom: @tape-frame-width * (@tape-frame-bottom-times + 1) ;
         left: (100% - @window-width-percentage) * 0.5;
@@ -238,6 +243,7 @@ html, body {
     @wheel-frame-size: @tape-frame-width * (@holder-height-times + 0.7);
     
     &__wheel {
+        display:none;
         height: @wheel-frame-size;
         width: @wheel-frame-size;
         position: absolute;
@@ -257,6 +263,7 @@ html, body {
     }
     
     &__glass {
+        display:none;
         position: absolute;
         margin: auto;
         top: 0;

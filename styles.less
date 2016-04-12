@@ -1,6 +1,13 @@
 @tape-frame-width: 2em;
 @tape-frame-bottom-times: 4;
+@tape-frame-bottom-height: @tape-frame-width * @tape-frame-bottom-times;
+@tape-frame-bottom-blank: 0.2em;
+
 @tape-color: #5A5A5A;
+@tape-background: 
+repeating-linear-gradient(to top, @tape-color, @tape-color 2px, transparent, transparent 3px), 
+repeating-linear-gradient(to right, @tape-color, @tape-color 2px, transparent, transparent 3px)
+;
 @tape-layout-z-index: 0;
 
 @holder-height-times: 3;
@@ -25,19 +32,20 @@ html, body {
     &__frame {
     
         width: 100%;
-        height: 100%;
         position: absolute;
-        background-color: @tape-color;
+        background: @tape-background;
         
         &--left {
             left: 0px;
             top: 0px;
+            bottom: @tape-frame-bottom-blank + @tape-frame-bottom-height;
             width: @tape-frame-width;
         }
         
         &--right {
             right: 0px;
             top: 0px;
+            bottom: @tape-frame-bottom-blank + @tape-frame-bottom-height;
             width: @tape-frame-width
         }
         
@@ -49,7 +57,7 @@ html, body {
             .table-corner(@rotate-angle) {
                 content: "";
                 display: block;
-                background-color: @tape-color;
+                background: @tape-background;
                 position: absolute;
                 width: @tape-frame-width * 2;
                 height: @tape-frame-width * 2;
@@ -69,9 +77,9 @@ html, body {
         }
         
         &--bottom {
-            bottom: 0px;
+            bottom: @tape-frame-bottom-blank;
             z-index: -2;
-            height: @tape-frame-width * @tape-frame-bottom-times;
+            height: @tape-frame-bottom-height;
         }
     }
     
@@ -84,7 +92,7 @@ html, body {
             width: @tape-frame-width * @holder-height-times;
             height: 1 / cos(@rotate-degree) / @tape-frame-width * @holder-height-times * @holder-height-times * 1.5;
             transform: rotate(@rotate-degree);
-            background-color: darken(@tape-color, 8%);
+            background: @tape-background;
         }
         
         .holder-shadow(@x, @y) {
@@ -97,7 +105,7 @@ html, body {
         height: @holder-height;
         width: @holder-width-percentage;
         
-        background-color: darken(@tape-color, 8%);
+        background: @tape-background;
         box-shadow: 0 -0.6em 0.3em -0.4em darken(@tape-color, 80%);
         
         &::before {
@@ -223,14 +231,13 @@ html, body {
         left: (100% - @window-width-percentage) * 0.5;
         height: @window-height;
         width: @window-width-percentage;
-        background-color: @tape-color;
+        background: @tape-background;
         border-radius: 16px;
     }
+
+    @wheel-frame-size: @tape-frame-width * (@holder-height-times + 0.7);
     
     &__wheel {
-        
-        @wheel-frame-size: @tape-frame-width * (@holder-height-times + 0.7);
-
         height: @wheel-frame-size;
         width: @wheel-frame-size;
         position: absolute;
@@ -246,6 +253,27 @@ html, body {
         
         &:nth-child(2) {
             right: (@window-height - @wheel-frame-size) / 2;
+        }   
+    }
+    
+    &__glass {
+        position: absolute;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+        left: @window-height + (@window-height - @wheel-frame-size) / 2;
+        
+        
+        height: @wheel-frame-size;
+        width: 50%;
+        
+        border-radius: 5px;
+        @media all and (orientation:portrait) {
+            background-color: red;
+        }
+        
+        @media all and (orientation:landscape) {
+            background-color: blue;
         }
         
     }

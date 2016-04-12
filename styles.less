@@ -1,18 +1,13 @@
 @tape-frame-width: 2em;
 @tape-frame-bottom-times: 3;
 @tape-frame-bottom-height: @tape-frame-width * @tape-frame-bottom-times;
-@tape-frame-bottom-blank: 0.2em;
-
-@tape-color: #5A5A5A;
-@tape-background: 
-repeating-linear-gradient(to top, @tape-color, @tape-color 2px, transparent, transparent 3px), 
-repeating-linear-gradient(to right, @tape-color, @tape-color 2px, white, white 3px)
-;
-@tape-frame-cornor-background: 
-repeating-linear-gradient(45deg, @tape-color, @tape-color 2px, transparent, transparent 3px), 
-repeating-linear-gradient(-45deg, @tape-color, @tape-color 2px, white, white 3px)
-;
+@tape-color: #3e3e3e;
 @tape-layout-z-index: 0;
+.tape-background(@deg: 0deg) {
+    background: 
+        repeating-linear-gradient(@deg, @tape-color, @tape-color 2px, transparent, transparent 3px), 
+        repeating-linear-gradient(@deg - 90, @tape-color, @tape-color 2px, white, white 3px);
+}
 
 @holder-height-times: 2.5;
 @holder-height: @tape-frame-width * @holder-height-times;
@@ -37,66 +32,66 @@ html, body {
     
         width: 100%;
         position: absolute;
-        background: @tape-background;
+        .tape-background();
         
         &--left {
-            left: 0px;
+            left: 0;
             top: @tape-frame-width;
-            bottom: @tape-frame-bottom-blank + @tape-frame-bottom-height + 0.01;
+            bottom: @tape-frame-bottom-height;
             width: @tape-frame-width;
         }
         
         &--right {
-            right: 0px;
+            right: 0;
             top: @tape-frame-width;
-            bottom: @tape-frame-bottom-blank + @tape-frame-bottom-height + 0.01;
+            bottom: @tape-frame-bottom-height;
             width: @tape-frame-width
         }
         
         &--top {
-            left: 0px;
-            top: 0px;
+            left: 0;
+            top: 0;
             height: @tape-frame-width;
-            
-            .table-corner(@rotate-angle) {
-                content: "";
-                z-index: -1;
-                background: @tape-frame-cornor-background;
-                position: absolute;
-                width: @tape-frame-width * 2;
-                height: @tape-frame-width * 2;
-                top: 0.06em;
-                transform: rotate(@rotate-angle);
-            }
-            
-            &::before {
-                .table-corner(45deg);
-                left: -0.03em;
-            }
-            
-            &::after {
-                .table-corner(-45deg);
-                right: 0;
-            }
         }
         
         &--bottom {
-            bottom: @tape-frame-bottom-blank;
-            z-index: -2;
+            left: 0;
+            bottom: 0;
+            z-index : @tape-layout-z-index;
             height: @tape-frame-bottom-height;
+        }
+        
+        .frame-corner(@rotate-angle) {
+            content: "";
+            position: absolute;
+            width: @tape-frame-width * 2;
+            height: @tape-frame-width * 2;
+            top: 0.06em;
+            transform: rotate(@rotate-angle);
+            .tape-background(45deg);
+        }
+        
+        &-cornor {
+            &--left {
+                .frame-corner(45deg);
+                left: 0;
+            }
+            
+            &--right {
+                .frame-corner(-45deg);
+                right: -0.03em;
+            }
         }
     }
     
     &__holder {
     
         .holder-side(@rotate-degree) {
-            content: "";
-            display: block;
             position: absolute;
             width: @tape-frame-width * @holder-height-times;
             height: 1 / cos(@rotate-degree) / @tape-frame-width * @holder-height-times * @holder-height-times * 1.7;
-            transform: rotate(@rotate-degree);
-            background: @tape-background;
+            transform: rotate(@rotate-degree);      
+            .tape-background(-@rotate-degree);
         }
         
         .holder-shadow(@x, @y) {
@@ -104,28 +99,30 @@ html, body {
         }
     
         position: absolute;
-        bottom: 0px;
+        bottom: 0;
         left: @holder-left-margin;
         height: @holder-height;
         width: @holder-width-percentage;
-        
-        background: @tape-background;
+        z-index : @tape-layout-z-index + 2;
         box-shadow: 0 -0.6em 0.3em -0.4em darken(@tape-color, 80%);
+        .tape-background();
         
-        &::before {
+        &__side:nth-child(1) {
             .holder-side(@holder-side-rotate-degree);
             .holder-shadow(-0.3em, -0.3em);
             transform-origin: top left;
-            z-index : -1;
+            bottom: -0.5em;
+            left: @holder-left-margin;
+            z-index : @tape-layout-z-index + 1;
         }
         
-        &::after {
+        &__side:nth-child(3) {
             .holder-side(-1 * @holder-side-rotate-degree);
             .holder-shadow(0.3em, -0.3em);
             transform-origin: top right;
-            right: 0px;
-            top: 0px;
-            z-index : -1;
+            bottom: -0.5em;
+            right: @holder-left-margin;
+            z-index : @tape-layout-z-index + 1;
         }
     }
     
@@ -225,63 +222,76 @@ html, body {
             right: @tape-hole-circle-side-margin;
         }    
     }
-    
-    @window-width-percentage: @holder-width-percentage;
-    @window-height: @tape-frame-width * (@holder-height-times + 1.5);
-    
-    &__window {
-        display:none;
-        position: absolute;
-        bottom: @tape-frame-width * (@tape-frame-bottom-times + 1) ;
-        left: (100% - @window-width-percentage) * 0.5;
-        height: @window-height;
-        width: @window-width-percentage;
-        background: @tape-background;
-        border-radius: 16px;
-    }
+}
 
-    @wheel-frame-size: @tape-frame-width * (@holder-height-times + 0.7);
+#map { 
+    height: 100%;
+}
+
+audio {
+    position: absolute;
+    z-index: @tape-layout-z-index + 2;
+    width: @holder-width-percentage;
+    margin-left: @holder-left-margin;
+    bottom: @tape-frame-bottom-height + 1em;
+    height: 3em;
+}
+
+body.homepage {
+    overflow: auto;
+    background-image: url('image/wood.jpg');
+}
+
+.tape-container {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.tape {
+
+    flex: initial;
+    text-align: center;
+    margin: 15px 15px 0 15px;
+    background-color: rgba(242, 242, 242, .6);
+    padding: 1em;
+    border-radius: 7px;
+    min-width: 16em;
+    max-width: 25em;
     
-    &__wheel {
-        display:none;
-        height: @wheel-frame-size;
-        width: @wheel-frame-size;
-        position: absolute;
-        margin: auto;
-        top: 0;
-        bottom: 0;
-        background-color: darken(@tape-color, 10%);
-        border-radius: 5px;
-        
-        &:nth-child(1) {
-            left: (@window-height - @wheel-frame-size) / 2;
-        }
-        
-        &:nth-child(2) {
-            right: (@window-height - @wheel-frame-size) / 2;
-        }   
+    &__caption {
+        font-size: 1.2em;
+        display: inline-block;
+        border-radius: 7px;
+        background-color: #FDE859;
+        margin: 0 1em 1em 1em;
+        padding: 1em;
+        flex: 0;
+        min-height: 2em;
+        width: 80%;
     }
     
-    &__glass {
-        display:none;
-        position: absolute;
-        margin: auto;
-        top: 0;
-        bottom: 0;
-        left: @window-height + (@window-height - @wheel-frame-size) / 2;
-        
-        
-        height: @wheel-frame-size;
-        width: 50%;
-        
-        border-radius: 5px;
-        @media all and (orientation:portrait) {
-            background-color: red;
-        }
-        
-        @media all and (orientation:landscape) {
-            background-color: blue;
-        }
-        
+    &__cover {
+        width: 100%;
     }
+}
+
+@switch-line-height: 2em;
+
+.switch {
+    padding: 0 7px;
+    font-size: 2em;
+    background-color: #006600;
+    color: white;
+    border-radius: 9px;
+    display: none;
+    
+    text-align: center;
+    line-height: @switch-line-height;
+    
+    position: absolute;
+    z-index: @tape-layout-z-index + 2;
+    margin-left: @holder-left-margin;
+    bottom: @tape-frame-bottom-height;
 }

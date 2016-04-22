@@ -5,10 +5,7 @@
         <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 
 		<title>Map Tape</title>
-        <style type="text/css">
-          html, body { height: 100%; margin: 0; padding: 0; }
-          #map { height: 100%; }
-        </style>
+        <link rel="stylesheet/less" type="text/css" href="styles.less" />
 	</head>
 
 	<body>
@@ -17,8 +14,36 @@
             Your browser does not support the audio element.
         </audio> 
         <div id="map"></div>
+        <div class="tape">
+            <div class="tape__holder__side"></div>
+
+            <div class="tape__holder">
+                <div class="tape__nail"></div>
+                <div class="tape__holes">
+                    <div class="tape__hole tape__hole--circle"></div>
+                    <div class="tape__hole tape__hole--square"></div>
+                    <div class="tape__hole tape__hole--square"></div>
+                    <div class="tape__hole tape__hole--circle"></div>
+                </div>
+            </div>
+            <div class="tape__holder__side"></div>
+            
+            <div class="tape__frame tape__frame-cornor--left"></div>
+            <div class="tape__frame tape__frame-cornor--right"></div>
+            
+            <div class="tape__frame tape__frame--right"></div>
+            <div class="tape__frame tape__frame--left"></div>
+            <div class="tape__frame tape__frame--top"></div>
+            <div class="tape__frame tape__frame--bottom"></div>
+             
+            <div class="tape__nail top left"></div>
+            <div class="tape__nail top right"></div>
+            <div class="tape__nail bottom left"></div>
+            <div class="tape__nail bottom right"></div>
+        </div>
     </body>
     
+    <script src="less.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
     <script type="text/javascript" src="track.nightmarket.json"></script>
     <script type="text/javascript" src="main.js"></script>

@@ -67,6 +67,7 @@ MapTapePlayer = function(map, path, audio) {
     var points = path.lerp(lerpStepInSeconds);
     var map = map;
     var audio = audio;
+    audio.volume = 0.5;
     
     var pointer = new google.maps.Marker({
         position : points[0],
@@ -74,7 +75,7 @@ MapTapePlayer = function(map, path, audio) {
     });
     
     var oldCenter = map.getCenter();
-    var distanceThresholdInMeter = 35;
+    var distanceThresholdInMeter = 30;
     var isOverDistance = function(oldCenter, next) {
         return google.maps.geometry.spherical.computeDistanceBetween(oldCenter, next) > distanceThresholdInMeter;
     };
@@ -94,7 +95,7 @@ MapTapePlayer = function(map, path, audio) {
         
         pointer.setPosition(next);
     };
-    
+
     return {
         play: function() {
             audio.play();
@@ -114,7 +115,12 @@ function init() {
     var center = data.path[0];
     var map = new google.maps.Map(document.getElementById('map'), {
             center : center,
-            zoom : data.zoom_level
+            zoom : data.zoom_level,
+            disableDefaultUI: true
+    });
+    
+    map.addListener('idle', function() {
+        player.play();
     });
     
     player = new MapTapePlayer(map, data.path, document.getElementsByTagName('audio')[0]);

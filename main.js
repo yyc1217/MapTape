@@ -96,6 +96,16 @@ MapTapePlayer = function(map, path, audio) {
         pointer.setPosition(next);
     };
 
+    if(!Dolby.checkDDPlus()) {
+        var children = audio.childNodes;
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].type && children[i].type == 'audio/wav') {
+                audio.src = children[i].src;
+                audio.load();
+            }
+        }
+    }
+    
     return {
         play: function() {
             audio.play();

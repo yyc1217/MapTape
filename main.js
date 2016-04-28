@@ -141,17 +141,21 @@ MapTapePlayer = function(map, path, audioSelector) {
 
 DolbySwitch = function(dolbySwitchSelector) {
     
-    dolbySwitch = document.querySelectorAll(dolbySwitchSelector)[0];
+    var elem = document.querySelectorAll(dolbySwitchSelector)[0];
+    var check = document.querySelectorAll(dolbySwitchSelector + ' input[type=checkbox]')[0];
+    
     if (Dolby.checkDDPlus()) {
-        dolbySwitch.style.display = 'block';   
+        elem.style.display = 'block';
+        check.checked = true;
     }
     
-    var check = document.querySelectorAll(dolbySwitchSelector + ' input[type=checkbox]')[0];
     check.onchange = function(e) {
         player.pause();
         e.target.checked ? player.dolby.enable() : player.dolby.disable();
         player.play();
     }
+    
+    return {};
 };
 
 var player;

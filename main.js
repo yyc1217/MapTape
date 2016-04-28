@@ -61,12 +61,14 @@ Array.prototype.lerp = function (lerpStepInSeconds) {
 
 };
 
-MapTapePlayer = function(map, path, audio) {
+MapTapePlayer = function(map, path, audioSelector) {
     
     var lerpStepInSeconds = 1;
     var points = path.lerp(lerpStepInSeconds);
     var map = map;
-    var audio = audio;
+    var dolbyAudioType = 'audio/mp4';
+    var isDolbyEnabled = Dolby.checkDDPlus();
+    var audio = document.querySelectorAll(audioSelector)[0];
     audio.volume = 0.5;
     
     var pointer = new google.maps.Marker({
@@ -96,29 +98,64 @@ MapTapePlayer = function(map, path, audio) {
         pointer.setPosition(next);
     };
 
-    if(!Dolby.checkDDPlus()) {
-        var children = audio.childNodes;
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].type && children[i].type == 'audio/wav') {
-                audio.src = children[i].src;
-                audio.load();
-            }
-        }
-    }
-    
     return {
         play: function() {
+            var cachedCurrentTime = audio.currentTime;
+            var findSource = function() {
+                var children = audio.childNodes;
+                for (var i = 0; i < children.length; i++) {
+                    if (isDolbyEnabled && children[i].type && children[i].type == dolbyAudioType) { 
+                        return children[i];
+                    }
+                    
+                    if (!isDolbyEnabled && children[i].type && children[i].type != dolbyAudioType) {
+                        return children[i];
+                    }
+                }
+                
+                return undefined;
+            };
+            
+            audio.src = findSource().src;
+            audio.load();
+            audio.currentTime = cachedCurrentTime;
             audio.play();
         },
         
         pause: function() {
             audio.pause();
+        },
+        
+        dolby: {
+            enable: function() {
+                isDolbyEnabled = true;
+            },
+            
+            disable: function() {
+                isDolbyEnabled = false;
+            }
         }
     };
     
 };
 
+DolbySwitch = function(dolbySwitchSelector) {
+    
+    dolbySwitch = document.querySelectorAll(dolbySwitchSelector)[0];
+    if (Dolby.checkDDPlus()) {
+        dolbySwitch.style.display = 'block';   
+    }
+    
+    var check = document.querySelectorAll(dolbySwitchSelector + ' input[type=checkbox]')[0];
+    check.onchange = function(e) {
+        player.pause();
+        e.target.checked ? player.dolby.enable() : player.dolby.disable();
+        player.play();
+    }
+};
+
 var player;
+var dolbySwitch;
 
 function init() {
 
@@ -129,9 +166,10 @@ function init() {
             disableDefaultUI: true
     });
     
-    map.addListener('idle', function() {
+    player = new MapTapePlayer(map, data.path, 'audio');   
+    google.maps.event.addListenerOnce(map, 'idle', function() {
         player.play();
     });
     
-    player = new MapTapePlayer(map, data.path, document.getElementsByTagName('audio')[0]);
+    dolbySwitch = new DolbySwitch('.switch');
 };

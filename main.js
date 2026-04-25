@@ -67,7 +67,7 @@ MapTapePlayer = function(map, path, audioSelector) {
     var points = path.lerp(lerpStepInSeconds);
     var map = map;
     var dolbyAudioType = 'audio/mp4';
-    var isDolbyEnabled = Dolby.checkDDPlus();
+    var isDolbyEnabled ??= Dolby.checkDDPlus();
     var audio = document.querySelectorAll(audioSelector)[0];
     audio.volume = 0.5;
     
